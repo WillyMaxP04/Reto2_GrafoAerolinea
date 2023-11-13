@@ -1,0 +1,82 @@
+// Implementa un grafo mediante una listas de adyacencia (explique porque sería mejor que con una matriz de adyacencia),
+// para modelar una parte esencial de su proyecto (explique como los pesos pueden mejorar el modelado de su solución).
+// En caso de no encontrar una aplicación ideal en su proyecto, puede simular una de las siguientes aplicaciones:
+
+// Elegido:  Organización de los vuelos de una aerolínea (costos y distancias).
+// Cada vértice representaría un aeropuerto y las aristas representarían los vuelos entre aeropuertos. Además, cada arista puede tener información adicional como costo y distancia.
+
+import java.util.ArrayList
+import java.util.HashMap
+import java.util.List
+
+// Representa la información asociada a un vuelo.
+class Vuelo(
+    // Declara una variable miembro destino de tipo String para almacenar el nombre del aeropuerto de destino.
+    var destino: String,
+    // Declara una variable miembro costo de tipo int para almacenar el costo del vuelo.
+    var costo: Int,
+    // Declara una variable miembro distancia de tipo int para almacenar la distancia del vuelo.
+    var distancia: Int
+) {
+
+}
+
+class GrafoAerolinea {
+    // Declara una variable miembro (vertices) que es un Map (un mapa) donde las claves son cadenas de texto (String) representando nombres de aeropuertos,
+    // y los valores son listas de vuelos (List<Vuelo>) desde ese aeropuerto.
+    var vertices: MutableMap<String, MutableList<Vuelo>> = HashMap()
+
+    // Este es el constructor de la clase GrafoAerolinea. Se ejecuta cuando se crea una nueva instancia de la clase.
+    init {
+        // Inicializa el mapa vertices como un nuevo HashMap. Un HashMap que es una implementacion de Map que almacena pares clave-valor y permite un acceso rápido a los valores a traves de las claves.
+        this.vertices = HashMap()
+    }
+
+    // Este metodo permite agregar un nuevo aeropuerto al grafo. Recibe como parametro el nombre del aeropuerto que se desea agregar.
+    fun agregarAeropuerto(aeropuerto: String) {
+        // Agrega una nueva entrada al mapa vertices. La clave es el nombre del aeropuerto, y el valor es una lista vacía de vuelos (ArrayList()).
+        vertices[aeropuerto] = ArrayList()
+    }
+
+    // Este metodo permite agregar un nuevo vuelo al grafo. Recibe como parámetros el aeropuerto de origen, el aeropuerto de destino, el costo y la distancia del vuelo.
+    fun agregarVuelo(origen: String, destino: String, costo: Int, distancia: Int) {
+        // Se instancia un nuevo objeto Vuelo con la información proporcionada.
+        val vuelo = Vuelo(destino, costo, distancia)
+        // Obtiene la lista de vuelos desde el aeropuerto de origen (vertices.get(origen)) y agrega el nuevo vuelo a esa lista.
+        vertices[origen]?.add(vuelo)
+    }
+
+    // Devuelve la lista de vuelos desde un aeropuerto específico. Recibe como parámetro el nombre del aeropuerto del cual deseas obtener los vuelos.
+    fun obtenerVuelos(aeropuerto: String): MutableList<Vuelo>? {
+        // Devuelve la lista de vuelos asociada al aeropuerto proporcionado.
+        return vertices[aeropuerto]
+    }
+}
+
+// Clase principal desde donde se ejecutara el programa.
+fun main() {
+    // Crea una nueva instancia de la clase GrafoAerolinea llamada grafoAerolinea.
+    val grafoAerolinea = GrafoAerolinea()
+
+    // Agrega el aeropuerto "Aeropuerto A" al grafo.
+    grafoAerolinea.agregarAeropuerto("Aeropuerto A")
+    // Agrega el aeropuerto "Aeropuerto B" al grafo.
+    grafoAerolinea.agregarAeropuerto("Aeropuerto B")
+    // Agrega el aeropuerto "Aeropuerto C" al grafo.
+    grafoAerolinea.agregarAeropuerto("Aeropuerto C")
+
+    // Agrega un vuelo desde "Aeropuerto A" a "Aeropuerto B" con un costo de 200 y una distancia de 1000.
+    grafoAerolinea.agregarVuelo("Aeropuerto A", "Aeropuerto B", 200, 1000)
+    // Agrega un vuelo desde "Aeropuerto A" a "Aeropuerto C" con un costo de 150 y una distancia de 800.
+    grafoAerolinea.agregarVuelo("Aeropuerto A", "Aeropuerto C", 150, 800)
+    // Agrega un vuelo desde "Aeropuerto B" a "Aeropuerto C" con un costo de 100 y una distancia de 600.
+    grafoAerolinea.agregarVuelo("Aeropuerto B", "Aeropuerto C", 100, 600)
+
+    // Obtiene la lista de vuelos desde "Aeropuerto A" y la almacena en la variable vuelosDesdeA.
+    val vuelosDesdeA = grafoAerolinea.obtenerVuelos("Aeropuerto A")
+    // Itera sobre la lista de vuelos desde "Aeropuerto A".
+    vuelosDesdeA?.forEach { vuelo ->
+        // Imprime la información de cada vuelo desde "Aeropuerto A".
+        println("Destino: ${vuelo.destino}, Costo: ${vuelo.costo}, Distancia: ${vuelo.distancia}")
+    }
+}
